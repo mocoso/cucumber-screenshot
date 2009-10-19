@@ -45,8 +45,9 @@ module CucumberScreenshot
       end
 
       def segment_for_scenario_named(name)
-        name.downcase.gsub(' ', '_')
+        name.downcase.gsub(' ', '_').gsub(/(\(|\))/, '')
       end
+
       def session
         step_mother.current_world.webrat_session
       end
