@@ -37,7 +37,7 @@ each page generated and the html source of each of those pages.
 If you want to capture a single screenshot rather than every page then add the
 following step to one of your Rails application's step files
 
-  sudo gem install webratThen "screenshot" do
+  Then "screenshot" do
     screenshot.should be_true
   end
   
