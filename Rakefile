@@ -7,9 +7,9 @@ begin
     gemspec.platform     = "universal-darwin"
     gemspec.requirements << "Mac OS X 10.5 or later"
     gemspec.requirements << "RubyCocoa"
-    gemspec.requirements << "Cucumber"
-    gemspec.requirements << "Webrat"
-    gemspec.requirements << "SnapUrl"
+    gemspec.add_dependency('cucumber', '>= 0.3.9')
+    gemspec.add_dependency('webrat', '>= 0.5.3')
+    gemspec.add_dependency('mocoso-snapurl', '>= 0.0.3')
     gemspec.email        = 'joel.chippindale@gmail.com'
     gemspec.authors      = ['Joel Chippindale']
   end

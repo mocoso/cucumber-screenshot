@@ -39,9 +39,9 @@ Unable to make screenshot, to find out what went wrong try the following from th
 
     #{command}
 
-Please remember need to have installed the gem mocoso-SnapshotUrl to take screenshots
+Please remember need to have installed the gem mocoso-snapshoturl to take screenshots
 
-    gem install mocoso-SnapshotUrl
+    gem install mocoso-snapshoturl
 
 "
         end
