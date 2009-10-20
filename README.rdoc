@@ -18,27 +18,37 @@ To install the latest release as a gem
 
 == Use
 
-Add the following line to your ./features/support/env.rb file
+Add the following linea to your ./features/support/env.rb file in your Rails
+project.
 
   require 'cucumber_screenshot'
+  World(CucumberScreenshot::World)
 
-and then run
+  # Take a screenshot if a scenario fails
+  After do |scenario|
+    if scenario.failed?
+      screenshot
+    end
+  end
 
-  cucumber features --format screenshot
+  # Take a screenshot for every step for scenario/features tagged @screenshot
+  AfterStep('@screenshot') do |scenario|
+    if screenshot_due?
+      screenshot
+    end
+  end
 
-from your Rails application's directory.
+Then use the 'rake cucumber' and 'rake cucumber:wip' tasks as per usual
 
-This will create a ./features/screenshots directory in your Rails application
-with subfolders for each scenario. Each subfolder will contain a screenshot of
-each page generated and the html source of each of those pages.
+Screenshots will be saved in ./features/screenshots in your project.
 
-== Capturing a single screenshot
+=== Capturing a single screenshot
 
 If you want to capture a single screenshot rather than every page then add the
 following step to one of your Rails application's step files
 
   Then "screenshot" do
-    screenshot.should be_true
+    screenshot
   end
   
 and then add
@@ -46,7 +56,7 @@ and then add
   Then screenshot
 
 to your feature file in the place where you want to capture a screenshot of the
-page that your application geneerated.
+page that your application generated.
 
 == TODO
 
