@@ -29,8 +29,8 @@ module CucumberScreenshot
 
       protected
         def rewrite_javascript_and_css_and_image_references(response_html) # :nodoc:
-          return response_html unless doc_root
-          rewrite_css_and_image_references(response_html).gsub(/"\/(javascript)/, doc_root + '/\1')
+          return response_html unless adapter.doc_root
+          response_html.gsub(/"\/(javascripts|stylesheets|images)\//, '"' + adapter.doc_root + '/\1/')
         end
 
         def report_error_running_screenshot_command(command)
