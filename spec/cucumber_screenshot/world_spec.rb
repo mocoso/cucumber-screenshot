@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
 
 class TestWorld
   include CucumberScreenshot::World
@@ -33,6 +33,7 @@ describe CucumberScreenshot::World do
   end
 
   describe '#embed_image' do
+
   end
 
   describe 'protected' do
