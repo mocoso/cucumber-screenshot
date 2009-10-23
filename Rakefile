@@ -10,6 +10,7 @@ begin
     gemspec.add_dependency('cucumber', '>= 0.3.9')
     gemspec.add_dependency('webrat', '>= 0.5.3')
     gemspec.add_dependency('mocoso-snapurl', '>= 0.0.3')
+    gemspec.add_dependency('snapurl', '>= 0.0.3')
     gemspec.email        = 'joel.chippindale@gmail.com'
     gemspec.authors      = ['Joel Chippindale']
   end
