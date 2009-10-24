@@ -10,7 +10,7 @@ module CucumberScreenshot
     end
 
     def screenshot(directory_name = base_screenshot_directory_name, file_name = "screenshot-#{Time.now.to_i}")
-      File.makedirs("#{directory_name}/html")
+      FileUtils.mkdir_p("#{directory_name}/html")
 
       html_file_name = "#{directory_name}/html/#{file_name}.html"
       File.open(html_file_name, "w") do |f|

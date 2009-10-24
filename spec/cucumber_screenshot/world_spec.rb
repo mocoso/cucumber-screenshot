@@ -18,7 +18,8 @@ describe CucumberScreenshot::World do
 
   describe '#screenshot' do
     before(:each) do
-      File.stub!(:makedirs => true, :open => true)
+      FileUtils.stub!(:mkdir_p => true)
+      File.stub!(:open => true)
       @session.stub!(:base_screenshot_directory_name => 'tmp/features/screenshots', :response_body => 'foo')
       @session.stub!(:'`' => 'foo')
       # While $? is not being set by the backtick stub
@@ -26,9 +27,12 @@ describe CucumberScreenshot::World do
     end
 
     it 'should call File.makedirs' do
-      File.should_receive(:makedirs).with('1/2/html').and_return(true)
+      FileUtils.should_receive(:mkdir_p).with('1/2/html').and_return(true)
       @session.screenshot('1/2', 'snapshot-001')
     end
+  end
+
+  describe '#embed_image' do
   end
 
   describe 'protected' do
