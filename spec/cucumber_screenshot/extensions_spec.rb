@@ -15,5 +15,16 @@ describe CucumberScreenshot::Extensions do
         formatter.embed_image('/tmp/foo.png')
       end
     end
+
+    describe 'Html#embed_image' do
+      it 'should build link and image' do
+        formatter = Cucumber::Formatter::Html.new(@step_mother, @io, {})
+        builder = mock('builder')
+        formatter.stub!(:builder => builder)
+        builder.should_receive(:a)
+        builder.should_receive(:img)
+        formatter.embed_image('/tmp/foo.png')
+      end
+    end
   end
 end
