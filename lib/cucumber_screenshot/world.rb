@@ -9,7 +9,7 @@ module CucumberScreenshot
       "#{RAILS_ROOT}/features/screenshots"
     end
 
-    def screenshot(directory_name = base_screenshot_directory_name, file_name = "screenshot-#{Time.now.to_i}")
+    def screenshot(directory_name = base_screenshot_directory_name, file_name = "screenshot-#{(Time.now.to_f * 100).to_i}")
       FileUtils.mkdir_p("#{directory_name}/html")
 
       html_file_name = "#{directory_name}/html/#{file_name}.html"
