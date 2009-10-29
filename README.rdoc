@@ -21,29 +21,34 @@ To install the latest release as a gem
 
 == Use
 
-Add the following linea to your ./features/support/env.rb file in your Rails
-project.
+Create a cucumber_screenshot_env.rb file in the ./features/support/ directory
+in your Rails project and put the following in it.
 
-  require 'cucumber_screenshot'
-  World(CucumberScreenshot::World)
+  begin
+    require 'cucumber_screenshot'
+    World(CucumberScreenshot::World)
 
-  # Take a screenshot if a scenario fails
-  After do |scenario|
-    if scenario.failed?
-      screenshot
+    After do |scenario|
+      if scenario.failed?
+        screenshot
+      end
     end
+
+    AfterStep('@screenshot') do |scenario|
+      if screenshot_due?
+        screenshot
+      end
+    end
+  rescue Exception => e
+    puts "Snapshots not available for this environment. Try installing
+      cucumber-screenshot with\n\n  gem install cucumber-screenshot\n"
   end
 
-  # Take a screenshot for every step for scenario/features tagged @screenshot
-  AfterStep('@screenshot') do |scenario|
-    if screenshot_due?
-      screenshot
-    end
-  end
+Then use the 'rake cucumber' and 'rake cucumber:wip' tasks as per usual.
 
-Then use the 'rake cucumber' and 'rake cucumber:wip' tasks as per usual
-
-Screenshots will be saved in ./features/screenshots in your project.
+Screenshots will be captured for every step failure and for every step in
+scenarios tagged @screenshot. The screenshots will be saved to a 
+./features/screenshots/ directory in your project.
 
 === Capturing a single screenshot
 
@@ -65,6 +70,7 @@ page that your application generated.
 
 - Clean out existing snapshots before each run
 - Add support for tables
+- Add a Rails generator to add the env and step code to a project
 
 == License
 
