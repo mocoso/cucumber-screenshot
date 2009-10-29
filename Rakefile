@@ -12,6 +12,7 @@ begin
     gemspec.add_dependency('snapurl', '>= 0.0.3')
     gemspec.email        = 'joel.chippindale@gmail.com'
     gemspec.authors      = ['Joel Chippindale']
+    gemspec.homepage     = 'http://github.com/mocoso/cucumber-screenshot'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
