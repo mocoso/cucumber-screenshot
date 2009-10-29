@@ -2,8 +2,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
     gemspec.name         = "cucumber-screenshot"
-    gemspec.summary      = "Cucumber formatter that outputs PNG screenshots of your app"
-    gemspec.description  = "Cucumber (http://cukes.info/) formatter that uses Webkit to capture PNG screenshots of your web application during tests"
+    gemspec.summary      = "Extension for Cucumber to capture PNG screenshots of your app"
+    gemspec.description  = "Extension for Cucumber (http://cukes.info/) that makes it easy to use Webkit to capture PNG screenshots of your web application during tests"
     gemspec.platform     = "universal-darwin"
     gemspec.requirements << "Mac OS X 10.5 or later"
     gemspec.requirements << "RubyCocoa"
