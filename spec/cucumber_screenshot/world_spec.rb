@@ -18,22 +18,72 @@ describe CucumberScreenshot::World do
 
   describe '#screenshot' do
     before(:each) do
+      @session.stub!(
+        :webrat_session => stub('webrat_session', :send => true, :response_body => 'response html'),
+        :rewrite_javascript_and_css_and_image_references => 'rewritten response html',
+        :embed => true
+      )
+
+      # Stub with a command line call, required because don't know of other way to set $? to 0
+      # TODO: Replace with mechanism that doesn't require this call
+      @session.stub!(:'`').and_return { |args| `ruby -e 'true'` }
+
       FileUtils.stub!(:mkdir_p => true)
-      File.stub!(:open => true)
-      @session.stub!(:base_screenshot_directory_name => 'tmp/features/screenshots', :response_body => 'foo')
-      @session.stub!(:'`' => 'foo')
-      # While $? is not being set by the backtick stub
-      @session.stub!(:report_error_running_screenshot_command => true)
+      @file = stub('file', :write => true)
+      File.stub!(:open).and_yield(@file)
     end
 
     it 'should call File.makedirs' do
-      FileUtils.should_receive(:mkdir_p).with('1/2/html').and_return(true)
-      @session.screenshot('1/2', 'snapshot-001')
+      FileUtils.should_receive(:mkdir_p).with('/1/2/html').and_return(true)
+      @session.screenshot('/1/2', 'snapshot-001')
     end
-  end
 
-  describe '#embed_image' do
+    it 'should open a file ' do
+      File.should_receive(:open).with('/1/2/html/snapshot-001.html', 'w').and_yield(@file)
+      @session.screenshot('/1/2', 'snapshot-001')
+    end
 
+    it 'should write to file' do
+      @file.should_receive(:write).with('rewritten response html')
+      @session.screenshot('/1/2', 'snapshot-001')
+    end
+
+    it 'should call snapurl' do
+      @session.should_receive(:'`') do |args|
+        args.should == 'snapurl file:///1/2/html/snapshot-001.html --no-thumbnail --no-clip --filename snapshot-001 --output-dir /1/2'
+      end
+      @session.screenshot('/1/2', 'snapshot-001')
+    end
+
+    it 'should embed image' do
+      @session.should_receive(:embed).with('/1/2/snapshot-001.png', 'image/png')
+      @session.screenshot('/1/2', 'snapshot-001')
+    end
+
+    it 'should set response_body_for_last_screenshot' do
+      lambda { @session.screenshot('/1/2', 'snapshot-001') }.should change(@session, :response_body_for_last_screenshot).to('response html')
+    end
+
+    describe 'when snapurl fails' do
+      before(:each) do
+        @session.stub!(:'`').and_return { |args| `ruby -e 'exit(1)'` }
+        @session.stub!(:report_error_running_screenshot_command)
+      end
+
+      it 'should not embed image' do
+        @session.should_not_receive(:embed)
+        @session.screenshot('/1/2', 'snapshot-001')
+      end
+
+      it 'should not set response_body_for_last_screenshot' do
+        lambda { @session.screenshot('/1/2', 'snapshot-001') }.should_not change(@session, :response_body_for_last_screenshot)
+      end
+
+      it 'should call report_error_running_screenshot_command' do
+        @session.should_receive(:report_error_running_screenshot_command)
+        @session.screenshot('/1/2', 'snapshot-001')
+      end
+    end
   end
 
   describe 'protected' do

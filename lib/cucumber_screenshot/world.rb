@@ -20,7 +20,7 @@ module CucumberScreenshot
       command = "snapurl file://#{html_file_name} --no-thumbnail --no-clip --filename #{file_name} --output-dir #{directory_name}"
       `#{command}`
       if $? == 0
-        embed_image "#{directory_name}/#{file_name}.png"
+        embed "#{directory_name}/#{file_name}.png", 'image/png'
         self.response_body_for_last_screenshot = current_response_body
         true
       else
@@ -31,10 +31,6 @@ module CucumberScreenshot
 
     def screenshot_due?
       current_response_body && current_response_body != response_body_for_last_screenshot && !webrat_session.redirect?
-    end
-
-    def embed_image(image_path)
-      @__cucumber_step_mother.embed_image(image_path)
     end
 
     protected
