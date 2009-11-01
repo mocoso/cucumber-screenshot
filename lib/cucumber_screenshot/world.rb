@@ -10,22 +10,24 @@ module CucumberScreenshot
     end
 
     def screenshot(directory_name = base_screenshot_directory_name, file_name = "screenshot-#{(Time.now.to_f * 100).to_i}")
-      FileUtils.mkdir_p("#{directory_name}/html")
+      if current_response_body
+        FileUtils.mkdir_p("#{directory_name}/html")
 
-      html_file_name = "#{directory_name}/html/#{file_name}.html"
-      File.open(html_file_name, "w") do |f|
-        f.write rewrite_javascript_and_css_and_image_references(current_response_body)
-      end
+        html_file_name = "#{directory_name}/html/#{file_name}.html"
+        File.open(html_file_name, "w") do |f|
+          f.write rewrite_javascript_and_css_and_image_references(current_response_body)
+        end
 
-      command = "snapurl file://#{html_file_name} --no-thumbnail --no-clip --filename #{file_name} --output-dir #{directory_name}"
-      `#{command}`
-      if $? == 0
-        embed "#{directory_name}/#{file_name}.png", 'image/png'
-        self.response_body_for_last_screenshot = current_response_body
-        true
-      else
-        report_error_running_screenshot_command(command)
-        false
+        command = "snapurl file://#{html_file_name} --no-thumbnail --no-clip --filename #{file_name} --output-dir #{directory_name}"
+        `#{command}`
+        if $? == 0
+          embed "#{directory_name}/#{file_name}.png", 'image/png'
+          self.response_body_for_last_screenshot = current_response_body
+          true
+        else
+          report_error_running_screenshot_command(command)
+          false
+        end
       end
     end
 
