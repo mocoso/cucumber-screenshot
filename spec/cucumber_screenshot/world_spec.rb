@@ -89,7 +89,7 @@ describe CucumberScreenshot::World do
   describe 'protected' do
     describe '#rewrite_javascript_and_css_and_image_references' do
       before(:each) do
-        @session.stub!(:webrat_session => stub('webrat_session', :adapter => stub('rails_adapter', :doc_root => '/tmp/public')))
+        @session.stub!(:doc_root => '/tmp/public')
       end
 
       it 'should replace relative /javascripts/ references with file references' do

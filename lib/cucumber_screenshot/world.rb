@@ -41,7 +41,6 @@ module CucumberScreenshot
       end
 
       def rewrite_javascript_and_css_and_image_references(response_html) # :nodoc:
-        doc_root = webrat_session.adapter.doc_root
         return response_html unless doc_root
         response_html.gsub(/"\/(javascripts|stylesheets|images)\//, '"' + doc_root + '/\1/')
       end
@@ -57,6 +56,10 @@ Please remember need to have installed the gem snapurl to take screenshots
     gem install snapurl
 
 "
+      end
+
+      def doc_root
+        File.expand_path(File.join(RAILS_ROOT, 'public'))
       end
   end
 end
