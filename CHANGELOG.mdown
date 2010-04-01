@@ -1,0 +1,10 @@
+# Change log
+
+## Head
+
+- Enable translation of local URLs for CSS/javascript etc. for non-standard paths
+- Fix bug where snapshots taken even where there is no change when not using snapurl
+
+## Version 0.3.0
+
+- Enable use without snapurl for just HTML snapshots on systems without RubyCocoa
