@@ -48,40 +48,46 @@ describe CucumberScreenshot::World do
       @session.screenshot('/1/2', 'snapshot-001')
     end
 
-    it 'should call snapurl' do
-      @session.should_receive(:'`') do |args|
-        args.should == 'snapurl file:///1/2/html/snapshot-001.html --no-thumbnail --no-clip --filename snapshot-001 --output-dir /1/2'
-      end
-      @session.screenshot('/1/2', 'snapshot-001')
-    end
-
-    it 'should embed image' do
-      @session.should_receive(:embed).with('/1/2/snapshot-001.png', 'image/png')
-      @session.screenshot('/1/2', 'snapshot-001')
-    end
-
-    it 'should set response_body_for_last_screenshot' do
-      lambda { @session.screenshot('/1/2', 'snapshot-001') }.should change(@session, :response_body_for_last_screenshot).to('response html')
-    end
-
-    describe 'when snapurl fails' do
+    describe 'when snapurl is installed' do
       before(:each) do
-        @session.stub!(:'`').and_return { |args| `ruby -e 'exit(1)'` }
-        @session.stub!(:report_error_running_screenshot_command)
+        CucumberScreenshot.stub!(:snap_url_present? => true)
       end
 
-      it 'should not embed image' do
-        @session.should_not_receive(:embed)
+      it 'should call snapurl' do
+        @session.should_receive(:'`') do |args|
+          args.should == 'snapurl file:///1/2/html/snapshot-001.html --no-thumbnail --no-clip --filename snapshot-001 --output-dir /1/2'
+        end
         @session.screenshot('/1/2', 'snapshot-001')
       end
 
-      it 'should not set response_body_for_last_screenshot' do
-        lambda { @session.screenshot('/1/2', 'snapshot-001') }.should_not change(@session, :response_body_for_last_screenshot)
+      it 'should embed image' do
+        @session.should_receive(:embed).with('/1/2/snapshot-001.png', 'image/png')
+        @session.screenshot('/1/2', 'snapshot-001')
       end
 
-      it 'should call report_error_running_screenshot_command' do
-        @session.should_receive(:report_error_running_screenshot_command)
-        @session.screenshot('/1/2', 'snapshot-001')
+      it 'should set response_body_for_last_screenshot' do
+        lambda { @session.screenshot('/1/2', 'snapshot-001') }.should change(@session, :response_body_for_last_screenshot).to('response html')
+      end
+
+      describe 'when snapurl fails' do
+        before(:each) do
+          @session.stub!(:'`').and_return { |args| `ruby -e 'exit(1)'` }
+          @session.stub!(:report_error_running_screenshot_command)
+        end
+
+        it 'should not embed image' do
+          @session.should_not_receive(:embed)
+          @session.screenshot('/1/2', 'snapshot-001')
+        end
+
+        it 'should not set response_body_for_last_screenshot' do
+          lambda { @session.screenshot('/1/2', 'snapshot-001') }.should_not change(@session, :response_body_for_last_screenshot)
+        end
+
+        it 'should call report_error_running_screenshot_command' do
+          @session.should_receive(:report_error_running_screenshot_command)
+          @session.screenshot('/1/2', 'snapshot-001')
+        end
       end
     end
   end

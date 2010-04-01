@@ -18,15 +18,17 @@ module CucumberScreenshot
           f.write rewrite_javascript_and_css_and_image_references(current_response_body)
         end
 
-        command = "snapurl file://#{html_file_name} --no-thumbnail --no-clip --filename #{file_name} --output-dir #{directory_name}"
-        `#{command}`
-        if $? == 0
-          embed "#{directory_name}/#{file_name}.png", 'image/png'
-          self.response_body_for_last_screenshot = current_response_body
-          true
-        else
-          report_error_running_screenshot_command(command)
-          false
+        if CucumberScreenshot.snap_url_present?
+          command = "snapurl file://#{html_file_name} --no-thumbnail --no-clip --filename #{file_name} --output-dir #{directory_name}"
+          `#{command}`
+          if $? == 0
+            embed "#{directory_name}/#{file_name}.png", 'image/png'
+            self.response_body_for_last_screenshot = current_response_body
+            true
+          else
+            report_error_running_screenshot_command(command)
+            false
+          end
         end
       end
     end
@@ -50,10 +52,6 @@ module CucumberScreenshot
 Unable to make screenshot, to find out what went wrong try the following from the command line
 
     #{command}
-
-Please remember need to have installed the gem snapurl to take screenshots
-
-    gem install snapurl
 
 "
       end

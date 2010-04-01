@@ -47,10 +47,17 @@ spec = Gem::Specification.new do |s|
 
   s.add_dependency('cucumber', '>= 0.6.2')
   s.add_dependency('webrat', '>= 0.7.0')
-  s.add_dependency('snapurl', '>= 0.0.3')
 
   # If your tests use any gems, include them here
   s.add_development_dependency('rspec')
+
+  s.post_install_message = 'To take actual screenshots rather than just snapshots of the HTML returned you will need Mac OS X 10.5 or later with RubyCocoa.
+
+You will also need to install the snapurl gem
+
+    gem install snapurl --version=0.3.0
+
+'
 
   s.requirements = ['Mac OS X 10.5 or later', 'RubyCocoa']
 end
