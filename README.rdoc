@@ -1,11 +1,11 @@
 = Cucumber Screenshot
 
-Cucumber Screenshot makes it easy to capture screenshots of the pages generated
+Cucumber Screenshot makes it easy to capture HTML snapshots and PNG screenshots of the pages generated
 by your Rails application as it runs your Cucumber/Webrat features.
 
-It uses WebKit to generate the screenshots and so is only available for OS X.
+It uses WebKit to generate the PNG screenshots and so they are only available for OS X.
 
-If you want to take screenshots on any other platform then take a look at
+If you want to take bitmap screenshots on any other platform then take a look at
 [this example]http://github.com/aslakhellesoy/cucumber/blob/master/examples/watir/features/support/screenshots.rb
 from Cucumber.
 
@@ -17,7 +17,11 @@ A Rails application with some features written in Cucumber/Webrat.
 
 To install the latest release as a gem
 
-  sudo gem install cucumber-screenshot
+  gem install cucumber-screenshot
+
+If you want to take PNG screenshots you will also need to install snapurl
+
+  gem install snapurl --version=0.3.0
 
 == Use
 
@@ -47,13 +51,14 @@ in your Rails project and put the following in it.
 Then use the 'rake cucumber' and 'rake cucumber:wip' tasks as per usual.
 
 Screenshots will be captured for every step failure and for every step in
-scenarios tagged @screenshot. The screenshots will be saved to a 
-./features/screenshots/ directory in your project.
+scenarios tagged @screenshot. The PNG screenshots and HTML snapshots will be
+saved to a the ./features/screenshots/ and ./features/screenshots/html
+directories respectively in your project.
 
 === Capturing a single screenshot
 
-If you want to capture a single screenshot rather than every page then add the
-following step to one of your Rails application's step files
+If you want to capture a single PNG screenshot/HTML snapshot rather than every
+page then add the following step to one of your Rails application's step files
 
   Then "screenshot" do
     screenshot
@@ -68,8 +73,7 @@ page that your application generated.
 
 == TODO
 
-- Clean out existing snapshots before each run
-- Add support for tables
+- Offer option to clean out existing snapshots before each run
 - Add a Rails generator to add the env and step code to a project
 
 == License
