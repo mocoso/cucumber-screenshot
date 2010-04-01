@@ -38,7 +38,7 @@ spec = Gem::Specification.new do |s|
   s.rdoc_options      = %w(--main README.rdoc)
 
   # Add any extra files to include in the gem
-  s.files             = %w(cucumber-screenshot.gemspec cucumber-screenshot.tmproj MIT-LICENSE Rakefile README.rdoc VERSION.yml) + Dir.glob("{spec,lib/**/*}")
+  s.files             = %w(cucumber-screenshot.gemspec cucumber-screenshot.tmproj MIT-LICENSE Rakefile README.rdoc) + Dir.glob("{spec,lib/**/*}")
   s.require_paths     = ["lib"]
 
   # If you want to depend on other gems, add them here, along with any
