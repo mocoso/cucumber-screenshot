@@ -1,6 +1,6 @@
 # Change log
 
-## Head
+## Version 0.3.1
 
 - Enable translation of local URLs for CSS/javascript etc. for non-standard paths
 - Fix bug where snapshots taken even where there is no change when not using snapurl

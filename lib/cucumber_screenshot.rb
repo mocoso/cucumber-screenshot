@@ -5,7 +5,7 @@ require 'webrat'
 require 'cucumber_screenshot/world'
 
 module CucumberScreenshot
-  VERSION = '0.3.0'
+  VERSION = '0.3.1'
 
   begin
     require 'snapurl'
