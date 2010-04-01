@@ -15,7 +15,7 @@ module CucumberScreenshot
 
         html_file_name = "#{directory_name}/html/#{file_name}.html"
         File.open(html_file_name, "w") do |f|
-          f.write rewrite_javascript_and_css_and_image_references(current_response_body)
+          f.write rewrite_local_urls(current_response_body)
         end
 
         if CucumberScreenshot.snap_url_present?
@@ -42,9 +42,10 @@ module CucumberScreenshot
         webrat_session.send(:response) && webrat_session.response_body
       end
 
-      def rewrite_javascript_and_css_and_image_references(response_html) # :nodoc:
+      # So that references to stylesheets, javascript and images will work
+      def rewrite_local_urls(response_html) # :nodoc:
         return response_html unless doc_root
-        response_html.gsub(/"\/(javascripts|stylesheets|images)\//, '"' + doc_root + '/\1/')
+        response_html.gsub(/"\/([^"]*)"/, %{"#{doc_root}} + '/\1"')
       end
 
       def report_error_running_screenshot_command(command)

@@ -20,7 +20,7 @@ describe CucumberScreenshot::World do
     before(:each) do
       @session.stub!(
         :webrat_session => stub('webrat_session', :send => true, :response_body => 'response html'),
-        :rewrite_javascript_and_css_and_image_references => 'rewritten response html',
+        :rewrite_local_urls => 'rewritten response html',
         :embed => true
       )
 
@@ -93,19 +93,14 @@ describe CucumberScreenshot::World do
   end
 
   describe 'protected' do
-    describe '#rewrite_javascript_and_css_and_image_references' do
+    describe '#rewrite_local_urls' do
       before(:each) do
         @session.stub!(:doc_root => '/tmp/public')
       end
 
-      it 'should replace relative /javascripts/ references with file references' do
-        @session.send(:rewrite_javascript_and_css_and_image_references, '<script src="/javascripts/application.js?1255077419" type="text/javascript"></script>').
+      it 'should replace local urls with file references' do
+        @session.send(:rewrite_local_urls, '<script src="/javascripts/application.js?1255077419" type="text/javascript"></script>').
           should == '<script src="/tmp/public/javascripts/application.js?1255077419" type="text/javascript"></script>'
-      end
-
-      it 'should replace relative /javascripts/ references with file references' do
-        @session.send(:rewrite_javascript_and_css_and_image_references, '<link href="/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />').
-          should == '<link href="/tmp/public/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />'
       end
     end
   end
