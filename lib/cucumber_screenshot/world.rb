@@ -29,6 +29,9 @@ module CucumberScreenshot
             report_error_running_screenshot_command(command)
             false
           end
+        else
+          self.response_body_for_last_screenshot = current_response_body
+          true
         end
       end
     end

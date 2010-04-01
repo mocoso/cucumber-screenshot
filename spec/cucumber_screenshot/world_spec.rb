@@ -48,6 +48,10 @@ describe CucumberScreenshot::World do
       @session.screenshot('/1/2', 'snapshot-001')
     end
 
+    it 'should set response_body_for_last_screenshot' do
+      lambda { @session.screenshot('/1/2', 'snapshot-001') }.should change(@session, :response_body_for_last_screenshot).to('response html')
+    end
+
     describe 'when snapurl is installed' do
       before(:each) do
         CucumberScreenshot.stub!(:snap_url_present? => true)
@@ -63,10 +67,6 @@ describe CucumberScreenshot::World do
       it 'should embed image' do
         @session.should_receive(:embed).with('/1/2/snapshot-001.png', 'image/png')
         @session.screenshot('/1/2', 'snapshot-001')
-      end
-
-      it 'should set response_body_for_last_screenshot' do
-        lambda { @session.screenshot('/1/2', 'snapshot-001') }.should change(@session, :response_body_for_last_screenshot).to('response html')
       end
 
       describe 'when snapurl fails' do
