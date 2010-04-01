@@ -1,31 +1,87 @@
 begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gemspec|
-    gemspec.name         = "cucumber-screenshot"
-    gemspec.summary      = "Extension for Cucumber to capture PNG screenshots of your app"
-    gemspec.description  = "Extension for Cucumber (http://cukes.info/) that makes it easy to use Webkit to capture PNG screenshots of your web application during tests"
-    gemspec.platform     = "universal-darwin"
-    gemspec.requirements << "Mac OS X 10.5 or later"
-    gemspec.requirements << "RubyCocoa"
-    gemspec.add_dependency('cucumber', '>= 0.6.2')
-    gemspec.add_dependency('webrat', '>= 0.7.0')
-    gemspec.add_dependency('snapurl', '>= 0.0.3')
-    gemspec.email        = 'joel.chippindale@gmail.com'
-    gemspec.authors      = ['Joel Chippindale']
-    gemspec.homepage     = 'http://github.com/mocoso/cucumber-screenshot'
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
-end
-
-begin
+  require 'spec'
   require 'spec/rake/spectask'
-  desc "Run the cucumber-screenshot specs"
+  desc 'Run the cucumber-screenshot specs'
   Spec::Rake::SpecTask.new('spec') do |t|
     t.spec_files = FileList['spec/**/*_spec.rb']
     t.spec_opts = ['--options', 'spec/spec.opts']
   end
 rescue LoadError
-  puts 'Rspec not available, install it with: sudo gem install rspec'
+  puts 'Rspec not available, install it with: gem install rspec'
+end
+
+
+require 'rubygems'
+require 'rake/gempackagetask'
+require 'rake/rdoctask'
+
+task :default => ['spec']
+
+# This builds the actual gem. For details of what all these options
+# mean, and other ones you can add, check the documentation here:
+#
+#   http://rubygems.org/read/chapter/20
+#
+spec = Gem::Specification.new do |s|
+  # Change these as appropriate
+  s.name              = 'cucumber-screenshot'
+  s.version           = '0.2.3'
+  s.summary           = 'Extension for Cucumber to capture PNG screenshots of your app'
+
+  s.description       = 'Extension for Cucumber (http://cukes.info/) that makes it easy to use Webkit to capture PNG screenshots of your web application during tests'
+  s.author            = 'Joel Chippindale'
+  s.email             = 'joel.chippindale@gmail.com'
+  s.homepage          = 'http://github.com/mocoso/cucumber-screenshot'
+
+  s.has_rdoc          = true
+  s.extra_rdoc_files  = %w(README.rdoc)
+  s.rdoc_options      = %w(--main README.rdoc)
+
+  # Add any extra files to include in the gem
+  s.files             = %w(cucumber-screenshot.gemspec cucumber-screenshot.tmproj MIT-LICENSE Rakefile README.rdoc VERSION.yml) + Dir.glob("{spec,lib/**/*}")
+  s.require_paths     = ["lib"]
+
+  # If you want to depend on other gems, add them here, along with any
+  # relevant versions
+  # s.add_dependency("some_other_gem", "~> 0.1.0")
+
+  s.add_dependency('cucumber', '>= 0.6.2')
+  s.add_dependency('webrat', '>= 0.7.0')
+  s.add_dependency('snapurl', '>= 0.0.3')
+
+  # If your tests use any gems, include them here
+  s.add_development_dependency('rspec')
+
+  s.requirements = ['Mac OS X 10.5 or later', 'RubyCocoa']
+end
+
+# This task actually builds the gem. We also regenerate a static
+# .gemspec file, which is useful if something (i.e. GitHub) will
+# be automatically building a gem for this project. If you're not
+# using GitHub, edit as appropriate.
+#
+# To publish your gem online, install the 'gemcutter' gem; Read more
+# about that here: http://gemcutter.org/pages/gem_docs
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.gem_spec = spec
+end
+
+desc "Build the gemspec file #{spec.name}.gemspec"
+task :gemspec do
+  file = File.dirname(__FILE__) + "/#{spec.name}.gemspec"
+  File.open(file, "w") {|f| f << spec.to_ruby }
+end
+
+task :package => :gemspec
+
+# Generate documentation
+Rake::RDocTask.new do |rd|
+  rd.main = "README.rdoc"
+  rd.rdoc_files.include("README.rdoc", "lib/**/*.rb")
+  rd.rdoc_dir = "rdoc"
+end
+
+desc 'Clear out RDoc and generated packages'
+task :clean => [:clobber_rdoc, :clobber_package] do
+  rm "#{spec.name}.gemspec"
 end
