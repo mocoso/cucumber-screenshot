@@ -23,7 +23,7 @@ If you want to take PNG screenshots you will also need to install snapurl
 
   gem install snapurl --version=0.3.0
 
-== Use
+== Set up your rails application
 
 Create a cucumber_screenshot_env.rb file in the ./features/support/ directory
 in your Rails project and put the following in it.
@@ -48,7 +48,22 @@ in your Rails project and put the following in it.
       cucumber-screenshot with\n\n  gem install cucumber-screenshot\n"
   end
 
-Then use the 'rake cucumber' and 'rake cucumber:wip' tasks as per usual.
+By default cucumber screenshot will do it's best to fix up references to your
+public assets (images, css, js, etc.) in the HTML for your screenshots to point
+at the public folder on your file system.
+
+However you may find that rendering is improved if you configure it to
+reference these via HTTP. Say you have a webserver running on
+http://localhost:3000 that will serve the public files then add a
+cucumber_screenshot.yml file containing the following to your application's
+./config/ directory
+
+  base_url: http://localhost:3000
+
+== Use
+
+Once you have set up your rails application then simply use the 'rake cucumber'
+and 'rake cucumber:wip' tasks as per usual.
 
 Screenshots will be captured for every step failure and for every step in
 scenarios tagged @screenshot. The PNG screenshots and HTML snapshots will be

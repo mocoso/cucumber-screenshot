@@ -47,8 +47,18 @@ module CucumberScreenshot
 
       # So that references to stylesheets, javascript and images will work
       def rewrite_local_urls(response_html) # :nodoc:
-        return response_html unless doc_root
-        response_html.gsub(/"\/([^"]*)"/, %{"#{doc_root}} + '/\1"')
+        if base_url
+          doc = Nokogiri::HTML::Document.parse response_html
+          base = Nokogiri::HTML::DocumentFragment.parse "<base href=\"#{base_url}\">"
+          head = doc.xpath("//head").first
+          head.child && head.child.add_previous_sibling(base)
+          doc.to_html
+        elsif doc_root
+          # TODO: replace with nokogiri calls
+          response_html.gsub(/"\/([^"]*)"/, %{"#{doc_root}} + '/\1"')
+        else
+          response_html
+        end
       end
 
       def report_error_running_screenshot_command(command)
@@ -58,6 +68,19 @@ Unable to make screenshot, to find out what went wrong try the following from th
     #{command}
 
 "
+      end
+
+      def config
+        config_file = File.expand_path(File.join(RAILS_ROOT, 'config', 'cucumber_screenshot.yml'))
+        @config ||= if File.exist?(config_file)
+          YAML::load(File.open(config_file))
+        else
+          {}
+        end
+      end
+
+      def base_url
+        config['base_url']
       end
 
       def doc_root
