@@ -1,5 +1,10 @@
 # Change log
 
+## Version 0.3.2
+
+- Enable configuration of URL to serve static assets (images, javascript,
+  stylesheets etc.) from.
+
 ## Version 0.3.1
 
 - Enable translation of local URLs for CSS/javascript etc. for non-standard paths
