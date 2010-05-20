@@ -58,8 +58,6 @@ You will also need to install the snapurl gem
     gem install snapurl --version=0.3.0
 
 For details about how to set up your features to make use of cucumber-screenshot see http://github.com/mocoso/cucumber-screenshot'
-
-  s.requirements = ['Mac OS X 10.5 or later', 'RubyCocoa']
 end
 
 # This task actually builds the gem. We also regenerate a static
