@@ -6,7 +6,7 @@ by your Rails application as it runs your Cucumber/Webrat features.
 It uses WebKit to generate the PNG screenshots and so they are only available for OS X.
 
 If you want to take bitmap screenshots on any other platform then take a look at
-[this example]http://github.com/aslakhellesoy/cucumber/blob/master/examples/watir/features/support/screenshots.rb
+{this example}[http://github.com/aslakhellesoy/cucumber/blob/master/examples/watir/features/support/screenshots.rb]
 from Cucumber.
 
 == Requirements
