@@ -49,10 +49,13 @@ module CucumberScreenshot
       def rewrite_local_urls(response_html) # :nodoc:
         if base_url
           doc = Nokogiri::HTML::Document.parse response_html
-          base = Nokogiri::HTML::DocumentFragment.parse "<base href=\"#{base_url}\">"
-          head = doc.xpath("//head").first
-          head.child && head.child.add_previous_sibling(base)
-          doc.to_html
+          if head = doc.xpath("//head").first
+            base = Nokogiri::HTML::DocumentFragment.parse "<base href=\"#{base_url}\">"
+            head.child && head.child.add_previous_sibling(base)
+            doc.to_html
+          else
+            response_html
+          end
         elsif doc_root
           # TODO: replace with nokogiri calls
           response_html.gsub(/"\/([^"]*)"/, %{"#{doc_root}} + '/\1"')
