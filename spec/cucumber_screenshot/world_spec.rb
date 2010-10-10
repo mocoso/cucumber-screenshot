@@ -99,7 +99,7 @@ describe CucumberScreenshot::World do
           @session.stub!(:base_url => 'http://localhost:3000')
         end
 
-        it 'should insert base url into head element when there is a base url' do
+        it 'should insert base url into head element when there is a base url has been configures' do
 
           source = %{<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -112,20 +112,7 @@ describe CucumberScreenshot::World do
 </body>
 </html>
 }
-
-          output = %{<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head profile="http://www.w3.org/2005/10/profile">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<base href="http://localhost:3000">
-<link href="/stylesheets/foo.css" media="screen" rel="stylesheet" type="text/css">
-</head>
-<body>
-<h1>A title</h1>
-</body>
-</html>
-}
-          @session.send(:rewrite_local_urls, source).should == output
+          @session.send(:rewrite_local_urls, source).should have_selector(%{head > base[href="http://localhost:3000"]})
         end
 
         it 'should not change the document when there is no head element' do
