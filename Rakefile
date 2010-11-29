@@ -45,11 +45,11 @@ spec = Gem::Specification.new do |s|
   # relevant versions
   # s.add_dependency("some_other_gem", "~> 0.1.0")
 
-  s.add_dependency('cucumber', '>= 0.6.2')
-  s.add_dependency('webrat', '>= 0.7.0')
+  s.add_dependency('cucumber', '~> 0.9')
+  s.add_dependency('webrat', '~> 0.7')
 
   # If your tests use any gems, include them here
-  s.add_development_dependency('rspec')
+  s.add_development_dependency('rspec', '~>1.3')
 
   s.post_install_message = 'To take actual screenshots rather than just snapshots of the HTML returned you will need Mac OS X 10.5 or later with RubyCocoa.
 
