@@ -1,5 +1,9 @@
 # Change log
 
+## Version 0.3.4
+
+- Update to version 0.9.x of cucumber
+
 ## Version 0.3.3
 
 - Gracefully handle case where there is not output to snapshot when a step

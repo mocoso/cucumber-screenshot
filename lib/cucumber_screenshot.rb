@@ -7,7 +7,7 @@ require 'nokogiri'
 require 'cucumber_screenshot/world'
 
 module CucumberScreenshot
-  VERSION = '0.3.3'
+  VERSION = '0.3.4'
 
   begin
     require 'snapurl'

@@ -25,7 +25,7 @@ task :default => ['spec']
 spec = Gem::Specification.new do |s|
   # Change these as appropriate
   s.name              = 'cucumber-screenshot'
-  s.version           = '0.3.3'
+  s.version           = '0.3.4'
   s.summary           = 'Extension for Cucumber to capture HTML snapshots/PNG screenshots of your app'
 
   s.description       = 'Extension for Cucumber (http://cukes.info/) that makes it easy to take HTML snapshots and also to use Webkit to capture PNG screenshots of your web application during tests'
